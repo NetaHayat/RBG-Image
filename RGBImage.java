@@ -111,15 +111,15 @@ public class RGBImage
     
     public void invertColors()
     {
-        RGBColor[][] invertImage = new RGBColor[_image.length][_image[0].length];
+       // RGBColor[][] invertImage = new RGBColor[_image.length][_image[0].length];
 
         for(int i = 0; i < _image.length; i++){ //rows
             for(int j = 0; j < _image[0].length; j++){ //columns 
-                invertImage[i][j] = _image[i][j];
-                invertImage[i][j].invert();
+              //  invertImage[i][j] = _image[i][j];
+                _Image[i][j].invert();
             }
         }
-        _image = invertImage;
+        //_image = invertImage;
     } // end of method invertColors()
     
     public void rotateClockwise()
@@ -149,35 +149,37 @@ public class RGBImage
     } // end of method rotateCounterClockwise()
     
     public void shiftCol(int offset)
-    {
-        if(offset < _image[0].length || offset == 0) {
+    {    
+        // validity
+        if(Math.abs(offset) > _image[0].length || offset == 0)
             return;
-        }
-        
-        RGBColor[][] shiftImage = new RGBColor[_image.length][_image[0].length];
-        
-        if(offset == _image[0].length) {
-            for(int i = 0; i < _image.length; i++){ //rows
-                for(int j = 0; j < _image[0].length; j++){ //columns 
-                    shiftImage[i][j] = new RGBColor();
-                }
+
+        // black image
+        RGBImage shift = new RGBImage(_image.length, _image[0].length);
+        for(int i = 0; i < _image.length; i++){ //rows
+            for(int j = 0; j < _image[0].length; j++){ //columns 
+                shift._image[i][j] = new RGBColor();
             }
         }
-        if(offset > 0) {
-            for(int i = offset; i < _image[0].length; i++){ 
+        
+        // shift right
+        if(offset > 0) {    
+            for(int i = _image[0].length - 1; i - offset >= 0; i--){ 
                 for(int j = 0; j < _image.length; j++){
-                    shiftImage[i][j] = _image[i][j-offset];
+                    shift._image[j][i] = _image[j][i - offset];
                 }
             }  
         }
-        else { 
-            for(int i = 0; i < _image[0].length + offset ; i++){ 
+        else { // shift left
+            offset = -offset;   // make possitive because we are possitive.
+            for(int i = 0; i + offset < _image[0].length; i++){ 
                 for(int j = 0; j < _image.length; j++){
-                    shiftImage[i][j] = _image[i][j-offset];
+                    shift._image[j][i] = _image[j][i + offset];
                 }
             }     
         }
-        _image = shiftImage;
+        
+        _image = shift._image;
     }
     
     public void shiftRow(int offset)
@@ -237,10 +239,8 @@ public class RGBImage
     } // end of method toString()
     
     public RGBColor[][] toRGBColorArray()
-    {
-        RGBImage copyImage = new RGBImage(this);
-        
-        return copyImage._image;    
+    {        
+        return new RGBImage(this)._image;    
     } // end of method toRGBColorArray()
     
 } // end of class RGBImage
