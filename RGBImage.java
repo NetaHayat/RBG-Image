@@ -117,8 +117,8 @@ public class RGBImage
     public boolean equals(RGBImage other)
     {
         // if the dimensions aren't equal or other is null
-        if(_image.length != other._image.length || _image[0].length != other._image[0].length || other == null){
-            return false;
+        if(other == null || _image.length != other._image.length || _image[0].length != other._image[0].length){
+            return false; 
         } // end of if statement
         
         for(int i = 0; i < _image.length; i++){ //rows
@@ -226,11 +226,6 @@ public class RGBImage
 
         // creating a black image based on the dimensions image
         RGBImage shift = new RGBImage(_image.length, _image[0].length);
-        for(int i = 0; i < _image.length; i++){ //rows
-            for(int j = 0; j < _image[0].length; j++){ //columns 
-                shift._image[i][j] = new RGBColor();
-            }// end of columns loop
-        } // end of rows loop
         
         if(offset > 0) { // shift right  
             for(int i = _image[0].length - 1; i - offset >= 0; i--){ // starts from the last column
@@ -266,11 +261,6 @@ public class RGBImage
         
         // creating a black image based on the dimensions image
         RGBImage shift = new RGBImage(_image.length, _image[0].length);
-        for(int i = 0; i < _image.length; i++){ //rows
-            for(int j = 0; j < _image[0].length; j++){ //columns 
-                shift._image[i][j] = new RGBColor();
-            } // end of columns loop
-        } // end of rows loop
         
         if(offset > 0) { // shift down
             for(int i = _image.length - 1; i - offset >= 0; i--){  // starts from the last row
@@ -315,13 +305,13 @@ public class RGBImage
      */
     public String toString()
     {
-        String strMatrix = new String(); // creating a new String 
+        String strMatrix = new String();  
         
         for(int i = 0; i < _image.length; i++){ //rows
             for(int j = 0; j < _image[0].length-1; j++){ //columns 
                    strMatrix += _image[i][j].toString() + ' '; // single space between each pixel of a row
             } // end of columns loop
-            strMatrix += _image[i][_image[0].length-1].toString() + '\n';  // new line afte the last pixel of each row
+            strMatrix += _image[i][_image[0].length-1].toString() + '\n';  // new line after the last pixel of each row
         } // end of rows loop
         return strMatrix;
     } // end of method toString()
